@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+        <meta charset="UTF-8">
+        <title>Basic3D</title>
+        <link rel="stylesheet" href="assets/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--
+        -->
+        <style>
+            td, th {
+                border: solid 1px rgba(0,0,0,0.3);
+                line-height: 1;
+                padding: 4px;
+                text-align: center;
+            }
+            th{
+                text-transform: uppercase;
+                font-weight: 300;
+            }
+            td.texto{
+                text-align: left;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <div class="container" style="width: 95%;">
+                <div class="row">
+                    <div class="col s4 teal darken-4">
+                        <div class="col s12" style="height: 580px;">
+                            <h6 class="light white-text">Código Original</h6>
+                            <textarea name="c3d" id="c3d" cols="30" rows="10" style="background-color: #fff; height: 65%; width: 95%; border: solid 1px rgba(0,0,0,0.2); border-radius: 3px;"></textarea>
+                            <h6 class="light white-text">Salida:</h6>
+                            <textarea name="out" id="out" cols="30" rows="10" style="background-color: #fff; height: 20%; width: 95%; border: solid 1px rgba(0,0,0,0.2); border-radius: 3px;"></textarea>
+                        </div>
+                    </div>
+                    <div class="col s4">
+                        <h3 class="thin col s6 white-text">Optimización</h3>
+                        <div class="col s6" style="padding-top: 2em;">
+                            <a href="#" class="btn-floating darken-2 green"><i class="material-icons">play_arrow</i></a>
+                            <a href="#" class="btn-floating darken-2 blue"><i class="material-icons">fast_forward</i></a>
+                            <a href="#" class="btn-floating darken-2 red"><i class="material-icons">cancel</i></a>
+                        </div>
+                    </div>
+                    <div class="col s4 teal darken-4">
+                        <div class="col s12" style="height: 580px;">
+                            <h6 class="light white-text">Código Optimizado</h6>
+                            <textarea name="c3d" id="c3d" cols="30" rows="10" style="background-color: #fff; height: 65%; width: 95%; border: solid 1px rgba(0,0,0,0.2); border-radius: 3px;"></textarea>
+                            <h6 class="light white-text">Salida:</h6>
+                            <textarea name="out" id="out" cols="30" rows="10" style="background-color: #fff; height: 20%; width: 95%; border: solid 1px rgba(0,0,0,0.2); border-radius: 3px;"></textarea>
+                        </div>
+                    </div>
+
+
+
+
+
+                    <div class="col s2 blue lighten-5" style="position: absolute; margin-left: 420px; height: 100%;">
+                        <h5 class="thin">Stack <span class="light">P=17</span></h5>
+                        <hr>
+                        <table style="font-size: 11px;">
+                            <tbody><tr><th width="6em;">Posición</th><th>Valor</th></tr>
+                            </tbody><tbody id="stack"><tr class="blue lighten-1"><td>0</td><td>ámbito de Principal</td></tr><tr class="blue lighten-1"><td>1</td><td>ámbito de Principal</td></tr><tr class="blue lighten-1"><td>2</td><td>ámbito de Principal</td></tr><tr class="blue lighten-1"><td>3</td><td>ámbito de Principal</td></tr><tr class="blue lighten-1"><td>4</td><td>ámbito de Principal</td></tr><tr class="blue lighten-1"><td>5</td><td>ámbito de Principal</td></tr><tr class="blue lighten-1"><td>6</td><td>ámbito de Principal</td></tr><tr class="blue lighten-1"><td>7</td><td>ámbito de Principal</td></tr><tr class="blue lighten-1"><td>8</td><td>ámbito de Principal</td></tr><tr class="blue lighten-1"><td>9</td><td>ámbito de Principal</td></tr><tr class="blue lighten-1"><td>10</td><td>ámbito de Principal</td></tr><tr class="blue lighten-1"><td>11</td><td>ámbito de Principal</td></tr><tr class="blue lighten-3"><td>12</td><td>ámbito de Buscar</td></tr><tr class="blue lighten-3"><td>13</td><td>ámbito de Buscar</td></tr><tr class="blue lighten-3"><td>14</td><td>ámbito de Buscar</td></tr><tr class="blue lighten-3"><td>15</td><td>ámbito de Buscar</td></tr><tr class="blue lighten-3"><td>16</td><td>ámbito de Buscar</td></tr><tr class="blue lighten-1"><td>17</td><td>ámbito de Comparar</td></tr><tr class="blue lighten-1"><td>18</td><td>ámbito de Comparar</td></tr><tr class="blue lighten-1"><td>19</td><td>ámbito de Comparar</td></tr><tr class="blue lighten-1"><td>20</td><td>ámbito de Comparar</td></tr></tbody>
+                        </table>
+                    </div>
+                    <div class="col s2 green lighten-5" style="position: absolute; margin-left: 648px; height: 100%;">
+                        <h5 class="thin">Heap <span class="light">H=12</span></h5>
+                        <hr>
+                        <div class="col s12">
+                            <table style="font-size: 11px;">
+                                <tbody><tr><th width="6em;">Posición</th><th>Valor</th></tr>
+                                </tbody><tbody id="heap"><tr class="green lighten-1"><td>0</td><td>Árbol:arbolito</td></tr><tr class="green lighten-1"><td>1</td><td>Árbol:arbolito</td></tr><tr class="green lighten-1"><td>2</td><td>Árbol:arbolito</td></tr><tr class="green lighten-1"><td>3</td><td>Árbol:arbolito</td></tr><tr class="green lighten-1"><td>4</td><td>Árbol:arbolito</td></tr><tr class="green lighten-1"><td>5</td><td>Árbol:arbolito</td></tr><tr class="green lighten-1"><td>6</td><td>Árbol:arbolito</td></tr><tr class="green lighten-3"><td>7</td><td>Nodo:Raíz</td></tr><tr class="green lighten-3"><td>8</td><td>Nodo:Raíz</td></tr><tr class="green lighten-3"><td>9</td><td>Nodo:Raíz</td></tr><tr class="green lighten-3"><td>10</td><td>Nodo:Raíz</td></tr><tr class="green lighten-3"><td>11</td><td>Nodo:Raíz</td></tr></tbody>
+                            </table>						
+                        </div>
+                    </div>
+                    <div class="col s4 orange lighten-5" style="position: absolute; margin-left: 876px; height: 100%;">
+                        <h5 class="thin">String Pool <span class="light">S=60</span></h5>
+                        <hr>
+                        <table style="font-size: 11px;">
+                            <tbody><tr><th width="6em;">Posición</th><th>Valor</th></tr>
+                            </tbody><tbody id="pool">
+                                <tr class="orange lighten-3">
+                                    <td>0</td>
+                                    <td class="texto">Esta cadena ocupa 29 espacios</td>
+                                </tr>
+                                <tr class="orange lighten-1">
+                                    <td>30</td>
+                                    <td class="texto">Cadena de prueba</td>
+                                </tr>
+                                <tr class="orange lighten-3">
+                                    <td>46</td>
+                                    <td class="texto">Compiladores 2</td>
+                                </tr>
+                                <tr class="orange lighten-3">
+                                    <td>60</td>
+                                    <td class="texto"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <script type="text/javascript" src="assets/js/jquery-2.1.1.min.js"></script>
+        <script src="assets/js/materialize.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                i = 0;
+                content = "";
+                claro = true;
+                ambitos = [{"pos": 12, "valor": "ámbito de Principal"}, {"pos": 17, "valor": "ámbito de Buscar"}, {"pos": 21, "valor": "ámbito de Comparar"}];
+                for (j = 0; j < ambitos.length; j++) {
+                    while (i < ambitos[j].pos) {
+                        content += "<tr class='blue " + (claro ? "lighten-1" : "lighten-3") + "'><td>" + (i++) + "</td><td>" + ambitos[j].valor + "</td></tr>";
+                    }
+                    claro = !claro;
+                }
+                $("#stack").html(content);
+
+                i = 0;
+                content = "";
+                claro = true;
+                ambitos = [{"pos": 7, "valor": "Árbol:arbolito"}, {"pos": 12, "valor": "Nodo:Raíz"}];
+                for (j = 0; j < ambitos.length; j++) {
+                    while (i < ambitos[j].pos) {
+                        content += "<tr class='green " + (claro ? "lighten-1" : "lighten-3") + "'><td>" + (i++) + "</td><td>" + ambitos[j].valor + "</td></tr>";
+                    }
+                    claro = !claro;
+                }
+                $("#heap").html(content);
+            });
+        </script>
+
+        <div class="hiddendiv common"></div></body></html>

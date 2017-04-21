@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+        <meta charset="UTF-8">
+        <title>Basic3D</title>
+        <link rel="stylesheet" href="assets/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <style>
+            body { display: flex; min-height: 100vh; flex-direction: column; }
+            main { flex: 1 0 auto; }
+        </style>
+    </head>
+    <body>
+        <header>
+
+            <nav>
+                <div class="nav-wrapper teal darken-4">
+                    <a href="index.html" class="brand-logo right thin" style="padding-right: 1em;">Basic3D <small>(modo avanzado)</small></a>
+                    <ul id="nav-mobile" class="left hide-on-med-and-down">
+                        <li class="active">
+                            <a href="#!" class="dropdown-button" data-activates="modosDeEdicion">
+                                <!--
+                                -->
+                                <i class="material-icons left">edit</i>
+                                Edición
+                            </a><ul id="modosDeEdicion" class="dropdown-content">
+                                <li><a href="basic.html">Básica</a></li>
+                                <li><a href="medium.html">Intermedia</a></li>
+                                <li><a href="hard.html">Avanzada</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a target="_blank" href="debug.html">
+                                <!--
+                                -->
+                                <i class="material-icons left">bug_report</i>
+                                Debug
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#optimizacion">
+                                <!--
+                                -->
+                                <i class="material-icons left">trending_up</i>
+                                Optimizar
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#reportes">
+                                <!--
+                                -->
+                                <i class="material-icons left">list</i>
+                                Reportes
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <main>
+            <div class="container" style="width: 95%;">
+                <div class="row" style="padding-top: 2em;">
+                    <div class="col s12">
+                        <div class="col s6" style="height: 510px;">
+                            <h5 class="light col s8">Programa en Basic3D</h5>
+                            <div class="col s4">
+                                <a href="#" class="btn-floating darken-2 blue"><i class="material-icons">file_upload</i></a>
+                                <a href="#" class="btn-floating lighten-2 light-blue"><i class="material-icons">file_download</i></a>
+                                <a href="#" class="btn-floating darken-2 green"><i class="material-icons">play_arrow</i></a>
+                            </div>
+                            <textarea name="s3d" id="s3d" cols="30" rows="10" style="border: solid 1px rgba(0,0,0,0.2); height: 85%; font-family: monospace;">Principal(){
+	outStr("Hola mundo");
+}</textarea>
+                        </div>
+                        <div class="col s6" style="height: 510px;">
+                            <h5 class="light col s8">Estructuras</h5>
+                            <div class="col s4">
+                                <a href="#" class="btn-floating darken-2 blue"><i class="material-icons">file_upload</i></a>
+                                <a href="#" class="btn-floating lighten-2 light-blue"><i class="material-icons">file_download</i></a>
+                            </div>
+                            <textarea name="b3d" id="b3d" cols="30" rows="10" style="border: solid 1px rgba(0,0,0,0.2); height: 85%; font-family: monospace;">elemento : Nodo { % Definición del elemento Nodo
+	Persona valor : NULL;
+	str cadena : “Hola”;
+	Nodo izq : NULL;
+	Nodo der : NULL;
+}
+
+elemento : Persona { % Definición del elemento Persona
+	num edad : 15 * 4;
+	str nombre : “Esvin”;
+	str auxiliatura : “Compiladores 2”;
+}</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer class="page-footer teal darken-4">
+            <div class="container">
+            </div>
+            <div class="footer-copyright">
+                <div class="container">
+                    © 2017 Universidad de San Carlos de Guatemala
+                </div>
+            </div>
+        </footer>
+        <script type="text/javascript" src="assets/js/jquery-2.1.1.min.js"></script>
+        <script src="assets/js/materialize.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('ul.tabs').tabs();
+            });
+        </script>
+
+        <div class="hiddendiv common"></div></body></html>

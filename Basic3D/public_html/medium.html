@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="es"><head><style>.blocklyDraggable {}
+            .blocklySvg {
+                background-color: #fff;
+                outline: none;
+                overflow: hidden;
+                position: absolute;
+                display: block;
+            }
+            .blocklyWidgetDiv {
+                display: none;
+                position: absolute;
+                z-index: 99999;
+            }
+            .injectionDiv {
+                height: 100%;
+                position: relative;
+                overflow: hidden;
+            }
+            .blocklyNonSelectable {
+                user-select: none;
+                -moz-user-select: none;
+                -webkit-user-select: none;
+                -ms-user-select: none;
+            }
+            .blocklyWsDragSurface {
+                display: none;
+                position: absolute;
+                overflow: visible;
+                top: 0;
+                left: 0;
+            }
+            .blocklyBlockDragSurface {
+                display: none;
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                overflow: visible !important;
+                z-index: 50;
+            }
+            .blocklyTooltipDiv {
+                background-color: #ffffc7;
+                border: 1px solid #ddc;
+                box-shadow: 4px 4px 20px 1px rgba(0,0,0,.15);
+                color: #000;
+                display: none;
+                font-family: sans-serif;
+                font-size: 9pt;
+                opacity: 0.9;
+                padding: 2px;
+                position: absolute;
+                z-index: 100000;
+            }
+            .blocklyResizeSE {
+                cursor: se-resize;
+                fill: #aaa;
+            }
+            .blocklyResizeSW {
+                cursor: sw-resize;
+                fill: #aaa;
+            }
+            .blocklyResizeLine {
+                stroke: #888;
+                stroke-width: 1;
+            }
+            .blocklyHighlightedConnectionPath {
+                fill: none;
+                stroke: #fc3;
+                stroke-width: 4px;
+            }
+            .blocklyPathLight {
+                fill: none;
+                stroke-linecap: round;
+                stroke-width: 1;
+            }
+            .blocklySelected>.blocklyPath {
+                stroke: #fc3;
+                stroke-width: 3px;
+            }
+            .blocklySelected>.blocklyPathLight {
+                display: none;
+            }
+            .blocklyDragging>.blocklyPath,
+            .blocklyDragging>.blocklyPathLight {
+                fill-opacity: .8;
+                stroke-opacity: .8;
+            }
+            .blocklyDragging>.blocklyPathDark {
+                display: none;
+            }
+            .blocklyDisabled>.blocklyPath {
+                fill-opacity: .5;
+                stroke-opacity: .5;
+            }
+            .blocklyDisabled>.blocklyPathLight,
+            .blocklyDisabled>.blocklyPathDark {
+                display: none;
+            }
+            .blocklyText {
+                cursor: default;
+                fill: #fff;
+                font-family: sans-serif;
+                font-size: 11pt;
+            }
+            .blocklyNonEditableText>text {
+                pointer-events: none;
+            }
+            .blocklyNonEditableText>rect,
+            .blocklyEditableText>rect {
+                fill: #fff;
+                fill-opacity: .6;
+            }
+            .blocklyNonEditableText>text,
+            .blocklyEditableText>text {
+                fill: #000;
+            }
+            .blocklyEditableText:hover>rect {
+                stroke: #fff;
+                stroke-width: 2;
+            }
+            .blocklyBubbleText {
+                fill: #000;
+            }
+            .blocklyFlyout {
+                position: absolute;
+                z-index: 20;
+            }
+            .blocklyFlyoutButton {
+                fill: #888;
+                cursor: default;
+            }
+            .blocklyFlyoutButtonShadow {
+                fill: #666;
+            }
+            .blocklyFlyoutButton:hover {
+                fill: #aaa;
+            }
+            .blocklyFlyoutLabel {
+                cursor: default;
+            }
+            .blocklyFlyoutLabelBackground {
+                opacity: 0;
+            }
+            .blocklyFlyoutLabelText {
+                fill: #000;
+            }
+            .blocklySvg text, .blocklyBlockDragSurface text {
+                user-select: none;
+                -moz-user-select: none;
+                -webkit-user-select: none;
+                cursor: inherit;
+            }
+            .blocklyHidden {
+                display: none;
+            }
+            .blocklyFieldDropdown:not(.blocklyHidden) {
+                display: block;
+            }
+            .blocklyIconGroup {
+                cursor: default;
+            }
+            .blocklyIconGroup:not(:hover),
+            .blocklyIconGroupReadonly {
+                opacity: .6;
+            }
+            .blocklyIconShape {
+                fill: #00f;
+                stroke: #fff;
+                stroke-width: 1px;
+            }
+            .blocklyIconSymbol {
+                fill: #fff;
+            }
+            .blocklyMinimalBody {
+                margin: 0;
+                padding: 0;
+            }
+            .blocklyCommentTextarea {
+                background-color: #ffc;
+                border: 0;
+                margin: 0;
+                padding: 2px;
+                resize: none;
+            }
+            .blocklyHtmlInput {
+                border: none;
+                border-radius: 4px;
+                font-family: sans-serif;
+                height: 100%;
+                margin: 0;
+                outline: none;
+                padding: 0 1px;
+                width: 100%
+            }
+            .blocklyMainBackground {
+                stroke-width: 1;
+                stroke: #c6c6c6;
+            }
+            .blocklyMutatorBackground {
+                fill: #fff;
+                stroke: #ddd;
+                stroke-width: 1;
+            }
+            .blocklyFlyoutBackground {
+                fill: #ddd;
+                fill-opacity: .8;
+            }
+            .blocklyScrollbarHorizontal, .blocklyScrollbarVertical {
+                position: absolute;
+                outline: none;
+                z-index: 30;
+            }
+            .blocklyScrollbarBackground {
+                opacity: 0;
+            }
+            .blocklyScrollbarHandle {
+                fill: #ccc;
+            }
+            .blocklyScrollbarBackground:hover+.blocklyScrollbarHandle,
+            .blocklyScrollbarHandle:hover {
+                fill: #bbb;
+            }
+            .blocklyZoom>image {
+                opacity: .4;
+            }
+            .blocklyZoom>image:hover {
+                opacity: .6;
+            }
+            .blocklyZoom>image:active {
+                opacity: .8;
+            }
+            .blocklyFlyout .blocklyScrollbarHandle {
+                fill: #bbb;
+            }
+            .blocklyFlyout .blocklyScrollbarBackground:hover+.blocklyScrollbarHandle,
+            .blocklyFlyout .blocklyScrollbarHandle:hover {
+                fill: #aaa;
+            }
+            .blocklyInvalidInput {
+                background: #faa;
+            }
+            .blocklyAngleCircle {
+                stroke: #444;
+                stroke-width: 1;
+                fill: #ddd;
+                fill-opacity: .8;
+            }
+            .blocklyAngleMarks {
+                stroke: #444;
+                stroke-width: 1;
+            }
+            .blocklyAngleGauge {
+                fill: #f88;
+                fill-opacity: .8;
+            }
+            .blocklyAngleLine {
+                stroke: #f00;
+                stroke-width: 2;
+                stroke-linecap: round;
+            }
+            .blocklyContextMenu {
+                border-radius: 4px;
+            }
+            .blocklyDropdownMenu {
+                padding: 0 !important;
+            }
+            .blocklyWidgetDiv .goog-option-selected .goog-menuitem-checkbox,
+            .blocklyWidgetDiv .goog-option-selected .goog-menuitem-icon {
+                background: url(https://blockly-demo.appspot.com/static/media/sprites.png) no-repeat -48px -16px !important;
+            }
+            .blocklyToolboxDiv {
+                background-color: #ddd;
+                overflow-x: visible;
+                overflow-y: auto;
+                position: absolute;
+                z-index: 70;
+            }
+            .blocklyTreeRoot {
+                padding: 4px 0;
+            }
+            .blocklyTreeRoot:focus {
+                outline: none;
+            }
+            .blocklyTreeRow {
+                height: 22px;
+                line-height: 22px;
+                margin-bottom: 3px;
+                padding-right: 8px;
+                white-space: nowrap;
+            }
+            .blocklyHorizontalTree {
+                float: left;
+                margin: 1px 5px 8px 0;
+            }
+            .blocklyHorizontalTreeRtl {
+                float: right;
+                margin: 1px 0 8px 5px;
+            }
+            .blocklyToolboxDiv[dir="RTL"] .blocklyTreeRow {
+                margin-left: 8px;
+            }
+            .blocklyTreeRow:not(.blocklyTreeSelected):hover {
+                background-color: #e4e4e4;
+            }
+            .blocklyTreeSeparator {
+                border-bottom: solid #e5e5e5 1px;
+                height: 0;
+                margin: 5px 0;
+            }
+            .blocklyTreeSeparatorHorizontal {
+                border-right: solid #e5e5e5 1px;
+                width: 0;
+                padding: 5px 0;
+                margin: 0 5px;
+            }
+            .blocklyTreeIcon {
+                background-image: url(https://blockly-demo.appspot.com/static/media/sprites.png);
+                height: 16px;
+                vertical-align: middle;
+                width: 16px;
+            }
+            .blocklyTreeIconClosedLtr {
+                background-position: -32px -1px;
+            }
+            .blocklyTreeIconClosedRtl {
+                background-position: 0px -1px;
+            }
+            .blocklyTreeIconOpen {
+                background-position: -16px -1px;
+            }
+            .blocklyTreeSelected>.blocklyTreeIconClosedLtr {
+                background-position: -32px -17px;
+            }
+            .blocklyTreeSelected>.blocklyTreeIconClosedRtl {
+                background-position: 0px -17px;
+            }
+            .blocklyTreeSelected>.blocklyTreeIconOpen {
+                background-position: -16px -17px;
+            }
+            .blocklyTreeIconNone,
+            .blocklyTreeSelected>.blocklyTreeIconNone {
+                background-position: -48px -1px;
+            }
+            .blocklyTreeLabel {
+                cursor: default;
+                font-family: sans-serif;
+                font-size: 16px;
+                padding: 0 3px;
+                vertical-align: middle;
+            }
+            .blocklyTreeSelected .blocklyTreeLabel {
+                color: #fff;
+            }
+            .blocklyWidgetDiv .goog-palette {
+                outline: none;
+                cursor: default;
+            }
+            .blocklyWidgetDiv .goog-palette-table {
+                border: 1px solid #666;
+                border-collapse: collapse;
+            }
+            .blocklyWidgetDiv .goog-palette-cell {
+                height: 13px;
+                width: 15px;
+                margin: 0;
+                border: 0;
+                text-align: center;
+                vertical-align: middle;
+                border-right: 1px solid #666;
+                font-size: 1px;
+            }
+            .blocklyWidgetDiv .goog-palette-colorswatch {
+                position: relative;
+                height: 13px;
+                width: 15px;
+                border: 1px solid #666;
+            }
+            .blocklyWidgetDiv .goog-palette-cell-hover .goog-palette-colorswatch {
+                border: 1px solid #FFF;
+            }
+            .blocklyWidgetDiv .goog-palette-cell-selected .goog-palette-colorswatch {
+                border: 1px solid #000;
+                color: #fff;
+            }
+            .blocklyWidgetDiv .goog-menu {
+                background: #fff;
+                border-color: #ccc #666 #666 #ccc;
+                border-style: solid;
+                border-width: 1px;
+                cursor: default;
+                font: normal 13px Arial, sans-serif;
+                margin: 0;
+                outline: none;
+                padding: 4px 0;
+                position: absolute;
+                overflow-y: auto;
+                overflow-x: hidden;
+                max-height: 100%;
+                z-index: 20000;
+            }
+            .blocklyWidgetDiv .goog-menuitem {
+                color: #000;
+                font: normal 13px Arial, sans-serif;
+                list-style: none;
+                margin: 0;
+                padding: 4px 7em 4px 28px;
+                white-space: nowrap;
+            }
+            .blocklyWidgetDiv .goog-menuitem.goog-menuitem-rtl {
+                padding-left: 7em;
+                padding-right: 28px;
+            }
+            .blocklyWidgetDiv .goog-menu-nocheckbox .goog-menuitem,
+            .blocklyWidgetDiv .goog-menu-noicon .goog-menuitem {
+                padding-left: 12px;
+            }
+            .blocklyWidgetDiv .goog-menu-noaccel .goog-menuitem {
+                padding-right: 20px;
+            }
+            .blocklyWidgetDiv .goog-menuitem-content {
+                color: #000;
+                font: normal 13px Arial, sans-serif;
+            }
+            .blocklyWidgetDiv .goog-menuitem-disabled .goog-menuitem-accel,
+            .blocklyWidgetDiv .goog-menuitem-disabled .goog-menuitem-content {
+                color: #ccc !important;
+            }
+            .blocklyWidgetDiv .goog-menuitem-disabled .goog-menuitem-icon {
+                opacity: 0.3;
+                -moz-opacity: 0.3;
+                filter: alpha(opacity=30);
+            }
+            .blocklyWidgetDiv .goog-menuitem-highlight,
+            .blocklyWidgetDiv .goog-menuitem-hover {
+                background-color: #d6e9f8;
+                border-color: #d6e9f8;
+                border-style: dotted;
+                border-width: 1px 0;
+                padding-bottom: 3px;
+                padding-top: 3px;
+            }
+            .blocklyWidgetDiv .goog-menuitem-checkbox,
+            .blocklyWidgetDiv .goog-menuitem-icon {
+                background-repeat: no-repeat;
+                height: 16px;
+                left: 6px;
+                position: absolute;
+                right: auto;
+                vertical-align: middle;
+                width: 16px;
+            }
+            .blocklyWidgetDiv .goog-menuitem-rtl .goog-menuitem-checkbox,
+            .blocklyWidgetDiv .goog-menuitem-rtl .goog-menuitem-icon {
+                left: auto;
+                right: 6px;
+            }
+            .blocklyWidgetDiv .goog-option-selected .goog-menuitem-checkbox,
+            .blocklyWidgetDiv .goog-option-selected .goog-menuitem-icon {
+                background: url(//ssl.gstatic.com/editor/editortoolbar.png) no-repeat -512px 0;
+            }
+            .blocklyWidgetDiv .goog-menuitem-accel {
+                color: #999;
+                direction: ltr;
+                left: auto;
+                padding: 0 6px;
+                position: absolute;
+                right: 0;
+                text-align: right;
+            }
+            .blocklyWidgetDiv .goog-menuitem-rtl .goog-menuitem-accel {
+                left: 0;
+                right: auto;
+                text-align: left;
+            }
+            .blocklyWidgetDiv .goog-menuitem-mnemonic-hint {
+                text-decoration: underline;
+            }
+            .blocklyWidgetDiv .goog-menuitem-mnemonic-separator {
+                color: #999;
+                font-size: 12px;
+                padding-left: 4px;
+            }
+            .blocklyWidgetDiv .goog-menuseparator {
+                border-top: 1px solid #ccc;
+                margin: 4px 0;
+                padding: 0;
+            }
+        </style>
+        <meta charset="UTF-8">
+        <title>Basic3D</title>
+        <link rel="stylesheet" href="assets/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <style>
+            body { display: flex; min-height: 100vh; flex-direction: column; }
+            main { flex: 1 0 auto; }
+        </style>
+    </head>
+    <body>
+        <header>
+
+            <nav>
+                <div class="nav-wrapper teal darken-4">
+                    <a href="index.html" class="brand-logo right thin" style="padding-right: 1em;">Basic3D <small>(modo intermedio)</small></a>
+                    <ul id="nav-mobile" class="left hide-on-med-and-down">
+                        <li class="active">
+                            <a href="#!" class="dropdown-button" data-activates="modosDeEdicion">
+                                <!--
+                                -->
+                                <i class="material-icons left">edit</i>
+                                Edición
+                            </a><ul id="modosDeEdicion" class="dropdown-content">
+                                <li><a href="basic.html">Básica</a></li>
+                                <li><a href="medium.html">Intermedia</a></li>
+                                <li><a href="hard.html">Avanzada</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a target="_blank" href="debug.html">
+                                <!--
+                                -->
+                                <i class="material-icons left">bug_report</i>
+                                Debug
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#optimizacion">
+                                <!--
+                                -->
+                                <i class="material-icons left">trending_up</i>
+                                Optimizar
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#reportes">
+                                <!--
+                                -->
+                                <i class="material-icons left">list</i>
+                                Reportes
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <main>
+            <div class="container" style="width: 95%;">
+                <div class="row" style="padding-top: 2em;">
+                    <div class="col s12">
+                        <div class="col s6">
+                            <div id="blocklyMedio" style="height: 460px; width: 600px; margin-top: 1em;"><div class="injectionDiv" dir="LTR"><div class="blocklyToolboxDiv" dir="LTR" style="left: 0px; height: 460px;"><div class="blocklyTreeRoot" id=":0" role="tree" aria-selected="false" aria-expanded="false" aria-level="0" aria-labelledby=":0.label" hidefocus="true" tabindex="0"><div class="blocklyTreeRow blocklyHidden" style="padding-left:0px;"><span style="display:inline-block;" class="" role="presentation"></span><span class="blocklyTreeLabel" id=":0.label"></span><span></span></div><div style="background-position:-100px 0;" role="group"><div class="" id=":1" role="treeitem" aria-selected="false" aria-expanded="false" aria-level="1" aria-labelledby=":1.label" aria-setsize="3" aria-posinset="1"><div class="blocklyTreeRow" style="padding-left: 0px; border-left: 8px solid rgb(116, 165, 91);"><span role="presentation"></span><span style="display:inline-block;" class="blocklyTreeIcon blocklyTreeIconNone" role="presentation"></span><span class="blocklyTreeLabel" id=":1.label">Estructuras</span><span></span></div><div style="background-position:0px 0;display:none;" role="group"></div></div><div class="" id=":2" role="treeitem" aria-selected="false" aria-expanded="false" aria-level="1" aria-labelledby=":2.label" aria-setsize="3" aria-posinset="2"><div class="blocklyTreeRow" style="padding-left: 0px; border-left: 8px solid rgb(165, 91, 128);"><span role="presentation"></span><span style="display:inline-block;" class="blocklyTreeIcon blocklyTreeIconNone" role="presentation"></span><span class="blocklyTreeLabel" id=":2.label">Variables</span><span></span></div><div style="background-position:0px 0;display:none;" role="group"></div></div><div class="" id=":3" role="treeitem" aria-selected="false" aria-expanded="false" aria-level="1" aria-labelledby=":3.label" aria-setsize="3" aria-posinset="3"><div class="blocklyTreeRow" style="padding-left: 0px; border-left: 8px solid rgb(91, 116, 165);"><span role="presentation"></span><span style="display:inline-block;" class="blocklyTreeIcon blocklyTreeIconNone" role="presentation"></span><span class="blocklyTreeLabel" id=":3.label">Funciones</span><span></span></div><div style="background-position:-100px 0;display:none;" role="group"></div></div></div></div></div><svg xmlns="http://www.w3.org/2000/svg" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="blocklySvg" width="600px" height="460px"><defs><filter id="blocklyEmbossFilter6922130271764253"><feGaussianBlur in="SourceAlpha" stdDeviation="1" result="blur"></feGaussianBlur><feSpecularLighting in="blur" surfaceScale="1" specularConstant="0.5" specularExponent="10" lighting-color="white" result="specOut"><fePointLight x="-5000" y="-10000" z="20000"></fePointLight></feSpecularLighting><feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut"></feComposite><feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="1" k4="0"></feComposite></filter><pattern id="blocklyDisabledPattern6922130271764253" patternUnits="userSpaceOnUse" width="10" height="10"><rect width="10" height="10" fill="#aaa"></rect><path d="M 0 0 L 10 10 M 10 0 L 0 10" stroke="#cc0"></path></pattern><pattern id="blocklyGridPattern6922130271764253" patternUnits="userSpaceOnUse" width="100" height="100" x="126" y="7.000000000000114"></pattern></defs><g class="blocklyWorkspace"><rect height="100%" width="100%" class="blocklyMainBackground" style="fill: url(&quot;#blocklyGridPattern6922130271764253&quot;);"></rect><g class="blocklyTrash" transform="translate(508,355)" style="opacity: 0.4;"><clipPath id="blocklyTrashBodyClipPath003881362274785083"><rect width="47" height="44" y="16"></rect></clipPath><image width="96" x="0" height="124" y="-32" clip-path="url(#blocklyTrashBodyClipPath003881362274785083)" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://blockly-demo.appspot.com/static/media/sprites.png"></image><clipPath id="blocklyTrashLidClipPath003881362274785083"><rect width="47" height="16"></rect></clipPath><image width="96" x="0" height="124" y="-32" clip-path="url(#blocklyTrashLidClipPath003881362274785083)" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://blockly-demo.appspot.com/static/media/sprites.png" transform="rotate(0,43,14)"></image></g><g class="blocklyBlockCanvas" transform="translate(126,7.000000000000114) scale(1)"></g><g class="blocklyBubbleCanvas" transform="translate(126,7.000000000000114) scale(1)"></g><rect height="25" width="25" class="blocklyScrollbarBackground" x="574.5" y="434.5"></rect></g></svg><svg class="blocklyScrollbarVertical" width="25" height="434" style="transform: translate(574.5px, 0.5px);"><g><rect class="blocklyScrollbarBackground" width="25" height="434"></rect><rect class="blocklyScrollbarHandle" rx="10" ry="10" width="20" x="2.5" height="220.35320088300222" y="213.64679911699776"></rect></g></svg><svg class="blocklyScrollbarHorizontal" height="25" width="455" style="transform: translate(119.5px, 434.5px);"><g><rect class="blocklyScrollbarBackground" height="25" width="455"></rect><rect class="blocklyScrollbarHandle" rx="10" ry="10" height="20" y="2.5" width="230.85970464135022" x="224.14029535864978"></rect></g></svg><svg class="blocklyFlyout" style="display: none"><path class="blocklyFlyoutBackground"></path><g class="blocklyWorkspace"><g class="blocklyBlockCanvas"></g><g class="blocklyBubbleCanvas"></g></g></svg><svg class="blocklyScrollbarVertical" width="25"><g><rect class="blocklyScrollbarBackground" width="25"></rect><rect class="blocklyScrollbarHandle" rx="10" ry="10" width="20" x="2.5"></rect></g></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="blocklyBlockDragSurface"><g transform="translate(126,7) scale(1)"></g></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="blocklyWsDragSurface"></svg></div></div>
+                        </div>
+                        <div class="col s6">
+                            <div class="col s6">
+                                <h4 class="thin center col s6">Editando...</h4>
+
+                            </div>
+                            <div class="col s6 input-field">
+                                <div class="select-wrapper"><span class="caret">▼</span><input type="text" class="select-dropdown" readonly="true" data-activates="select-options-4d1a1d9b-5656-80cd-0742-b4e2627774e4" value="getSuma: int, int"><ul id="select-options-4d1a1d9b-5656-80cd-0742-b4e2627774e4" class="dropdown-content select-dropdown "><li class=""><span>Principal</span></li><li class=""><span>getSuma: int, int</span></li><li class=""><span>recorrerArbol:Nodo</span></li></ul><select name="function" id="function" class="initialized">
+                                        <option value="f1">Principal</option>
+                                        <option value="f2" selected="">getSuma: int, int</option>
+                                        <option value="f3">recorrerArbol:Nodo</option>
+                                    </select></div>
+                                <label for="function">Métodos/Funciones</label>
+                            </div>
+                            <div class="col s12" style="height: 400px;">
+                                <ul class="collection">
+                                    <li class="collection-item">
+                                        getSuma 
+                                        <div class="chip">int:A</div>
+                                        <div class="chip">int:B</div>
+                                    </li>
+                                </ul>
+                                <textarea name="basic3d" id="basic3d" cols="30" rows="10" style="border: solid 1px rgba(0,0,0,0.2); border-radius: 5px; width: 100%; height: 81%;"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer class="page-footer teal darken-4">
+            <div class="container">
+            </div>
+            <div class="footer-copyright">
+                <div class="container">
+                    © 2017 Universidad de San Carlos de Guatemala
+                </div>
+            </div>
+        </footer>
+    <xml id="mToolbox" style="display: none">
+        <category name="Estructuras" colour="100">
+            <block type="text_print"></block>
+        </category>
+        <category name="Variables" colour="330" custom="VARIABLE"></category>
+        <category name="Funciones" colour="220" custom="PROCEDURE"></category>
+    </xml>
+    <script type="text/javascript" src="assets/js/jquery-2.1.1.min.js"></script>
+    <script src="assets/js/materialize.min.js"></script>
+    <script src="blockly/blockly_compressed.js"></script>
+    <script src="blockly/blocks_compressed.js"></script>
+    <script src="blockly/msg/js/es.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('ul.tabs').tabs();
+            Blockly.inject('blocklyMedio', {toolbox: document.getElementById('mToolbox')});
+            $('select').material_select();
+        });
+    </script>
+
+    <div class="hiddendiv common"></div><div class="blocklyWidgetDiv"></div><div class="blocklyTooltipDiv"></div></body></html>
