@@ -1,0 +1,5 @@
+
+%% Variables globales
+num max : 5;
+Nodo inicio : NULL;
+Nodo final : NULL;
