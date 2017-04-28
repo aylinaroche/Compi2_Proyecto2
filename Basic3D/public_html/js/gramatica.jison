@@ -22,12 +22,12 @@ b[01]+(.[01]+)?		  return 'binario'
 "%"                   return '%'
 "("                   return '('
 ")"                   return ')'
-">"                   return '>'
-"<"                   return '<'
 ">="                  return '>='
 "<="                  return '<='
 "=="                  return '=='
 "!="                  return '!='
+">"                   return '>'
+"<"                   return '<'
 "&&"                  return '&&'
 "||"                  return '||'
 "|&"                  return '|&'
@@ -133,14 +133,15 @@ ENTRADA	: ENTRADA INSTRUCCIONES {
 		;
 
 		
-INSTRUCCIONES	: VARIABLE{
+INSTRUCCIONES	:               ELEMENTO{
 		nodo  = new Nodo("INSTRUCCIONES",null,null,[$1]);
 		$$ = nodo;
 	}
-				| ELEMENTO{
+                                |VARIABLE{
 		nodo  = new Nodo("INSTRUCCIONES",null,null,[$1]);
 		$$ = nodo;
 	}
+				
 				| PRINCIPAL{
 		nodo  = new Nodo("INSTRUCCIONES",null,null,[$1]);
 		$$ = nodo;
@@ -200,7 +201,7 @@ TIPO	: boool { //1
 		;
 
 		
-VARIABLE: arreglo ':' id DIMEN of TIPO ';'{ //6
+VARIABLE: arreglo ':' id DIMEN of TIPO ';' { //6
 		nodo1 = new Nodo('arreglo',$1,@1,[]);
 		nodo2 = new Nodo(':',$2,@2,[]);
 		nodo3 = new Nodo('id',$3,@3,[]);
@@ -308,7 +309,7 @@ ACCESO	: ACCESO'.'id{
 		;
 		
 		
-ELEMENTO: element ':' id '{' INSTRUCCION '}'{
+ELEMENTO: element ':' id '{' INSTRUCCION '}' {
 		nodo0 = new Nodo('element',$1,@1,[]);
 		nodo1 = new Nodo(':',$2,@2,[]);
 		nodo2 = new Nodo('id',$3,@3,[]);
@@ -320,7 +321,7 @@ ELEMENTO: element ':' id '{' INSTRUCCION '}'{
 		;
 
 		
-METODO  : TIPO ':' id '(' PARAMETRO ')' '{' INSTRUCCION '}'{
+METODO  : TIPO ':' id '(' PARAMETRO ')' '{' INSTRUCCION '}'{ //9
 		nodo1 = new Nodo(':',$2,@2,[]);
 		nodo2 = new Nodo('id',$3,@3,[]);
 		nodo3 = new Nodo('(',$4,@4,[]);
@@ -863,7 +864,7 @@ EXCEPCION	: NullException{
 OP: E { 
 		nodo  = new Nodo("OP",null,null,[$1]);
 		$$ = nodo;
-		console.log("Expresion"); 
+		//console.log("Expresion"); 
 	}
 	;
 
@@ -913,17 +914,7 @@ E   : '(' E ')'{
 		nodo  = new Nodo("E",null,null,[nodo1,$1]);
 		$$ = nodo;
 	}
-	| E '>' E{
-		nodo1 = new Nodo('>',$2,@2,[]);
-		nodo  = new Nodo("E",null,null,[$1,nodo1,$3]);
-		$$ = nodo;
-	}
-    | E '<' E{
-		nodo1 = new Nodo('<',$2,@2,[]);
-		nodo  = new Nodo("E",null,null,[$1,nodo1,$3]);
-		$$ = nodo;
-	}
-    | E '>=' E{
+	| E '>=' E{
 		nodo1 = new Nodo('>=',$2,@2,[]);
 		nodo  = new Nodo("E",null,null,[$1,nodo1,$3]);
 		$$ = nodo;
@@ -940,6 +931,16 @@ E   : '(' E ')'{
 	}
 	| E '!=' E{
 		nodo1 = new Nodo('!=',$2,@2,[]);
+		nodo  = new Nodo("E",null,null,[$1,nodo1,$3]);
+		$$ = nodo;
+	}
+	| E '>' E{
+		nodo1 = new Nodo('>',$2,@2,[]);
+		nodo  = new Nodo("E",null,null,[$1,nodo1,$3]);
+		$$ = nodo;
+	}
+    | E '<' E{
+		nodo1 = new Nodo('<',$2,@2,[]);
 		nodo  = new Nodo("E",null,null,[$1,nodo1,$3]);
 		$$ = nodo;
 	}

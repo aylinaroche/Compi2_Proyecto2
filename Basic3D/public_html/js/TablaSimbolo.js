@@ -4,14 +4,16 @@
  * and open the template in the editor.
  */
 
-
+var pos = 0;
 
 class TablaSimbolo {
 
     agregarSimbolo(nombre, tipo, rol, ambito, tamanio, posicion, lista) {
-        console.log(nombre + " - " + tipo + " - " + rol + " - " + ambito + " - " + tamanio+ " - " + posicion);
-        var s = new Simbolo(nombre, tipo, rol, ambito, tamanio, posicion);
+        console.log(nombre + " - " + tipo + " - " + rol + " - " + ambito + " - " + tamanio + " - " + pos);
+        var s = new Simbolo(nombre, tipo, rol, ambito, tamanio, pos);
         lista.push(s);
+        pos++;
+        return true;
     }
 }
 

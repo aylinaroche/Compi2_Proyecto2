@@ -1,9 +1,7 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-/* global primer, listaSimbolo */
+
+
+/* global primer, listaSimbolo, tabla, heap, monticulo, ambito, codigo */
+tamanio = 0;
 
 class Recorrido {
 
@@ -11,9 +9,10 @@ class Recorrido {
         var result = null;
 
         if (raiz !== null) {
-            //   console.log(raiz.nombre+":"+raiz.hijos.length);
+            //  console.log(raiz.nombre+":"+raiz.hijos.length);
             switch (raiz.nombre) {
                 case "ENTRADA":
+                    ambito.add("global");
                     switch (raiz.hijos.length) {
                         case 1:
                             result = primer.Recorrer(raiz.hijos[0]);
@@ -39,15 +38,17 @@ class Recorrido {
                             mas = primer.Recorrer(raiz.hijos[1]);
                             var asignar = primer.Recorrer(raiz.hijos[2]);
                             for (var i = 0; i < mas.length; i++) {
-                                tabla.agregarSimbolo(mas[i], tipo, 'variable', 'global', 0, raiz.posicion, listaSimbolo);
+                                var correcto = tabla.agregarSimbolo(mas[i], tipo, 'variable', ambito.peek(), 0, raiz.posicion, listaSimbolo);
                             }
+                            
                             break;
                         case 6:
                             var tipo = primer.Recorrer(raiz.hijos[5]);
                             var tam = primer.Recorrer(raiz.hijos[3]);
-                            tabla.agregarSimbolo(raiz.hijos[2].token, tipo, 'arreglo', 'global', tam, raiz.posicion, listaSimbolo);
+                            tabla.agregarSimbolo(raiz.hijos[2].token, tipo, 'arreglo', ambito.peek(), tam, raiz.posicion, listaSimbolo);
                             break;
                     }
+                    tamanio += 1;
                     break;
                 case "ASIGNAR":
                     switch (raiz.hijos.length) {
@@ -93,23 +94,55 @@ class Recorrido {
                     }
                     break;
                 case "ELEMENTO":
-                    result = primer.Recorrer(raiz.hijos[0]);
-                    tabla.agregarSimbolo(raiz.hijos[2].token, "-", 'elemento', 'global', tam, raiz.posicion, listaSimbolo);
-                            
+                    tamanio = 0;
+                    var id = raiz.hijos[2].token;
+                    ambito.add(id);
+                    result = primer.Recorrer(raiz.hijos[4]);
+                    ambito.pop();
+                    tabla.agregarSimbolo(id, "elemento", 'elemento', ambito.peek(), tamanio, raiz.posicion, listaSimbolo);
+
+                    codigo.agregarC3D(id + "{\n\n" + result + "\n}\n\n");
                     break;
                 case "PRINCIPAL":
                     result = primer.Recorrer(raiz.hijos[0]);
-                    //tabla.agregarSimbolo(raiz.hijos[2].token, tipo, 'arreglo', 'global', tam, raiz.posicion, listaSimbolo);                            
+                    tabla.agregarSimbolo("Principal", "vacio", 'metodo', ambito.peek(), 0, raiz.posicion, listaSimbolo);
                     break;
                 case "METODO":
-                    result = primer.Recorrer(raiz.hijos[0]);
-                    break;
-                case "OP":
-                    result = primer.Recorrer(raiz.hijos[0]);
+                    switch (raiz.hijos.length) {
+                        case 9:
+                            result = primer.Recorrer(raiz.hijos[0]);
+                            tabla.agregarSimbolo(raiz.hijos[2].token, result, 'metodo', ambito.peek(), 0, raiz.posicion, listaSimbolo);
+                            break;
+                        case 10:
+                            result = primer.Recorrer(raiz.hijos[0]);
+                            var dimen = primer.Recorrer(raiz.hijos[1]);
+                            tabla.agregarSimbolo(raiz.hijos[3].token, result, 'metodo', ambito.peek(), 0, raiz.posicion, listaSimbolo);
+                            break;
+                    }
                     break;
                 case "TIPO":
                     result = raiz.hijos[0].token;
-                    //   console.log(result);
+                    break;
+                case "INSTRUCCION":
+                    switch (raiz.hijos.length) {
+                        case 1:
+                            primer.Recorrer(raiz.hijos[0]);
+                            break;
+                        case 2:
+                            primer.Recorrer(raiz.hijos[0]);
+                            primer.Recorrer(raiz.hijos[1]);
+                            break;
+                    }
+                    break;
+                case "INST":
+                    switch (raiz.hijos.length) {
+                        case 1:
+                            primer.Recorrer(raiz.hijos[0]);
+                            break;
+                    }
+                    break;
+                case "OP":
+                    result = primer.Recorrer(raiz.hijos[0]);
                     break;
                 case "E":
                     if (raiz.hijos.length === 1) {
