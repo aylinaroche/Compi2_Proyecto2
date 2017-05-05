@@ -1,8 +1,13 @@
 
+/* global tabla, codigo, stack */
+
 var temp = 0;
 var l = 1;
 var c3d = "";
 var cad;
+var P = 0;
+var H = 0;
+var S = 0;
 
 class ControlC3D {
 
@@ -13,7 +18,7 @@ class ControlC3D {
     }
 
     generaTemp() {
-        return "t$" + temp++;
+        return "t" + temp++;
     }
 
     agregarC3D(sentencia) {
@@ -30,9 +35,11 @@ class ControlC3D {
 }
 
 class NodoC3D {
-    constructor(cadena, v, f) {
+    constructor(cadena, tipo, v, f) {
         this.cadena = cadena;
+        this.tipo = tipo;
         this.v = v;
         this.f = f;
     }
 }
+

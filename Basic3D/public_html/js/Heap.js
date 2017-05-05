@@ -1,7 +1,8 @@
 
 /* global reporte, codigo */
 
-var H = 0;
+//var H = 0;
+//var S = 0;
 
 class Heap {
 
@@ -42,10 +43,8 @@ class Heap {
         }
     }
     
-    iniciarHeap(){
-        var ini = codigo.generaTemp();
-        var codigo = ini + " = H\n";
-        return codigo;
+   agregarHeap(num){
+        
     }
 }
 

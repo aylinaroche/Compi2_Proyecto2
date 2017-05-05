@@ -42,8 +42,8 @@ b[01]+(.[01]+)?		  return 'binario'
 ";"                   return ';'
 "["                   return '['
 "]"                   return ']'
-"="           		  return '='
-".."           		  return '..'
+"="                   return '='
+".."                  return '..'
 "bool"                return 'boool'
 "num"                 return 'num'
 "str"                 return 'str'
@@ -86,7 +86,7 @@ b[01]+(.[01]+)?		  return 'binario'
 "hex"                 return 'hex'
 "dec"                 return 'dec'
 "throws"              return 'lanzar'
-"NullPointerException"		return 'NullException'
+"NullPointerException"      return 'NullException'
 "MissingReturnException"    return 'MissingException'
 "ArithmeticException"       return 'AritmeticException'
 "StackOverFlowException"    return 'StackException'
@@ -457,7 +457,7 @@ INST 	: VARIABLE{
 		;
 		
 		
-SI	: si '(' OP ')' entonces '{' INSTRUCCION '}'{
+SI	: si '(' OP ')' entonces '{' INSTRUCCION '}'{ //8
 		nodo1 = new Nodo('si',$1,@1,[]);
 		nodo2 = new Nodo('(',$2,@2,[]);
 		nodo3 = new Nodo(')',$4,@4,[]);
@@ -570,7 +570,7 @@ DEFECTO	: defecto ':' INSTRUCCION{
 		;
 
 		
-CICLO 	: mientras '(' OP ')' '{' INSTRUCCION '}'{
+CICLO 	: mientras '(' OP ')' '{' INSTRUCCION '}'{ //7
 		nodo1 = new Nodo('mientras',$1,@1,[]);
 		nodo2 = new Nodo('(',$2,@2,[]);
 		nodo4 = new Nodo(')',$4,@4,[]);
@@ -579,7 +579,7 @@ CICLO 	: mientras '(' OP ')' '{' INSTRUCCION '}'{
 		nodo  = new Nodo("CICLO",null,null,[nodo1,nodo2,$3,nodo4,nodo5,$6,nodo6]);
 		$$ = nodo;
 	}
-		| hacer '{' INSTRUCCION '}' mientras '(' OP ')'{
+		| hacer '{' INSTRUCCION '}' mientras '(' OP ')'{ //8
 		nodo1 = new Nodo('hacer',$1,@1,[]);
 		nodo2 = new Nodo('{',$2,@2,[]);
 		nodo3 = new Nodo('}',$4,@4,[]);
@@ -589,17 +589,17 @@ CICLO 	: mientras '(' OP ')' '{' INSTRUCCION '}'{
 		nodo  = new Nodo("CICLO",null,null,[nodo1,nodo2,$3,nodo3,nodo4,nodo5,$7,nodo7]);
 		$$ = nodo;
 	}
-		| repetir '{' INSTRUCCION '}' hasta '(' OP ')'{
+		| repetir '{' INSTRUCCION '}' hasta '(' OP ')'{ //9
 		nodo1 = new Nodo('repetir',$1,@1,[]);
 		nodo2 = new Nodo('{',$2,@2,[]);
 		nodo3 = new Nodo('}',$4,@4,[]);
 		nodo4 = new Nodo('hasta',$5,@5,[]);
 		nodo5 = new Nodo('(',$6,@6,[]);
 		nodo7 = new Nodo(')',$8,@8,[]);
-		nodo  = new Nodo("CICLO",null,null,[nodo1,nodo2,$3,nodo3,nodo4,nodo5,$7,nodo7]);
+		nodo  = new Nodo("CICLO",null,null,[nodo1,nodo2,$3,nodo3,nodo4,nodo5,$7,nodo7,nodo7]);
 		$$ = nodo;
 	}
-		| looop id '{' INSTRUCCION '}'{
+		| looop id '{' INSTRUCCION '}'{ //5
 		nodo1 = new Nodo('loop',$1,@1,[]);
 		nodo2 = new Nodo('id',$2,@2,[]);
 		nodo3 = new Nodo('{',$3,@3,[]);
@@ -607,7 +607,7 @@ CICLO 	: mientras '(' OP ')' '{' INSTRUCCION '}'{
 		nodo  = new Nodo("CICLO",null,null,[nodo1,nodo2,nodo3,$4,nodo4]);
 		$$ = nodo;
 	}
-		| hacer '{' INSTRUCCION '}' mientrasX '(' OP "," OP ')'{
+		| hacer '{' INSTRUCCION '}' mientrasX '(' OP "," OP ')'{ //10
 		nodo1 = new Nodo('hacer',$1,@1,[]);
 		nodo2 = new Nodo('{',$2,@2,[]);
 		nodo3 = new Nodo('}',$4,@4,[]);
@@ -621,7 +621,7 @@ CICLO 	: mientras '(' OP ')' '{' INSTRUCCION '}'{
 		;
 
 		
-FOR 	: para '(' ASIGNACION  OP ';' OP ')' '{' INSTRUCCION '}'{
+FOR 	: para '(' ASIGNACION  OP ';' OP ')' '{' INSTRUCCION '}'{ //10
 		nodo1 = new Nodo('para',$1,@1,[]);
 		nodo2 = new Nodo('(',$2,@2,[]);
 		nodo3 = new Nodo(';',$5,@5,[]);
@@ -631,17 +631,17 @@ FOR 	: para '(' ASIGNACION  OP ';' OP ')' '{' INSTRUCCION '}'{
 		nodo  = new Nodo("FOR",null,null,[nodo1,nodo2,$3,$4,nodo3,$6,nodo4,nodo5,$9,nodo6]);
 		$$ = nodo;
 	}
-		| para '(' VARIABLE OP ';' OP ')' '{' INSTRUCCION '}'{
+		| para '(' VARIABLE OP ';' OP ')' '{' INSTRUCCION '}'{ //9
 		nodo1 = new Nodo('para',$1,@1,[]);
 		nodo2 = new Nodo('(',$2,@2,[]);
 		nodo3 = new Nodo(';',$5,@5,[]);
 		nodo4 = new Nodo(')',$7,@7,[]);
 		nodo5 = new Nodo('{',$8,@8,[]);
 		nodo6 = new Nodo('}',$10,@10,[]);
-		nodo  = new Nodo("FOR",null,null,[nodo1,nodo2,$3,$4,nodo3,$6,nodo4,nodo5,$9,nodo6]);
+		nodo  = new Nodo("FOR",null,null,[nodo1,nodo2,$3,$4,nodo3,$6,nodo4,nodo5,$9]);
 		$$ = nodo;
 	}
-		| count '(' OP ')' '{' INSTRUCCION '}'{
+		| count '(' OP ')' '{' INSTRUCCION '}'{//7
 		nodo1 = new Nodo('count',$1,@1,[]);
 		nodo2 = new Nodo('(',$2,@2,[]);
 		nodo4 = new Nodo(')',$4,@4,[]);
@@ -738,18 +738,18 @@ FUNCIONES	: TIPO ':' getRandom '(' ')'{
 	}
 	;
 
-OTROS  	: OTROS ';'{
+OTROS  	: OTROS ';'{ //1
 		nodo  = new Nodo("OTROS",null,null,[$1]);
 		$$ = nodo;
 	}
-		| getBool '(' OP ')'{
+		| getBool '(' OP ')'{ //4
 		nodo1 = new Nodo('getBool',$1,@1,[]);
 		nodo2 = new Nodo('(',$2,@2,[]);
 		nodo5 = new Nodo(')',$4,@4,[]);
 		nodo  = new Nodo("OTROS",null,null,[nodo1,nodo2,$3,nodo5]);
 		$$ = nodo;
 	}
-		| getNum '(' OP ',' BASE ',' OP ')'{
+		| getNum '(' OP ',' BASE ',' OP ')'{ //8
 		nodo1 = new Nodo('getNum',$1,@1,[]);
 		nodo2 = new Nodo('(',$2,@2,[]);
 		nodo3 = new Nodo(',',$4,@4,[]);
@@ -758,14 +758,14 @@ OTROS  	: OTROS ';'{
 		nodo  = new Nodo("OTROS",null,null,[nodo1,nodo2,$3,nodo3,$5,nodo4,$7,nodo5]);
 		$$ = nodo;
 	}
-		| outStr '(' OP ')' {
+		| outStr '(' OP ')' { //4
 		nodo1 = new Nodo('outStr',$1,@1,[]);
 		nodo2 = new Nodo('(',$2,@2,[]);
 		nodo5 = new Nodo(')',$4,@4,[]);
 		nodo  = new Nodo("OTROS",null,null,[nodo1,nodo2,$3,nodo5]);
 		$$ = nodo;
 	}
-		| outNum '(' OP ','  OP ')'{
+		| outNum '(' OP ','  OP ')'{ //6
 		nodo1 = new Nodo('outNum',$1,@1,[]);
 		nodo2 = new Nodo('(',$2,@2,[]);
 		nodo3 = new Nodo(',',$4,@4,[]);
@@ -773,7 +773,7 @@ OTROS  	: OTROS ';'{
 		nodo  = new Nodo("OTROS",null,null,[nodo1,nodo2,$3,nodo3,$5,nodo4]);
 		$$ = nodo;
 	}
-		| inStr '(' OP ',' OP ')' {
+		| inStr '(' OP ',' OP ')' { //6
 		nodo1 = new Nodo('inStr',$1,@1,[]);
 		nodo2 = new Nodo('(',$2,@2,[]);
 		nodo3 = new Nodo(',',$4,@4,[]);
@@ -781,7 +781,7 @@ OTROS  	: OTROS ';'{
 		nodo  = new Nodo("OTROS",null,null,[nodo1,nodo2,$3,nodo3,$5,nodo4]);
 		$$ = nodo;
 	}
-		| inNum '(' OP ',' OP ')'{
+		| inNum '(' OP ',' OP ')'{ // 6
 		nodo1 = new Nodo('inNum',$1,@1,[]);
 		nodo2 = new Nodo('(',$2,@2,[]);
 		nodo3 = new Nodo(',',$4,@4,[]);
@@ -789,21 +789,21 @@ OTROS  	: OTROS ';'{
 		nodo  = new Nodo("OTROS",null,null,[nodo1,nodo2,$3,nodo3,$5,nodo4]);
 		$$ = nodo;
 	}
-		| show '(' OP ')'{
+		| show '(' OP ')'{ //4
 		nodo1 = new Nodo('getNum',$1,@1,[]);
 		nodo2 = new Nodo('(',$2,@2,[]);
 		nodo5 = new Nodo(')',$4,@4,[]);
 		nodo  = new Nodo("OTROS",null,null,[nodo1,nodo2,$3,nodo5]);
 		$$ = nodo;
 	}
-		| getRandom '(' ')'{
+		| getRandom '(' ')'{ //3
 		nodo1 = new Nodo('getRandom',$1,@1,[]);
 		nodo2 = new Nodo('(',$2,@2,[]);
 		nodo5 = new Nodo(')',$3,@3,[]);
 		nodo  = new Nodo("OTROS",null,null,[nodo1,nodo2,nodo5]);
 		$$ = nodo;
 	}		
-		| getLength '(' OP ','  OP ')' {
+		| getLength '(' OP ','  OP ')' { //6
 		nodo1 = new Nodo('getLength',$1,@1,[]);
 		nodo2 = new Nodo('(',$2,@2,[]);
 		nodo3 = new Nodo(',',$4,@4,[]);
@@ -811,7 +811,7 @@ OTROS  	: OTROS ';'{
 		nodo  = new Nodo("OTROS",null,null,[nodo1,nodo2,$3,nodo3,$5,nodo4]);
 		$$ = nodo;
 	}
-		| getLength '(' OP ')' {
+		| getLength '(' OP ')' { //4
 		nodo1 = new Nodo('getLength',$1,@1,[]);
 		nodo2 = new Nodo('(',$2,@2,[]);
 		nodo3 = new Nodo(')',$4,@4,[]);
@@ -819,6 +819,7 @@ OTROS  	: OTROS ';'{
 		$$ = nodo;
 	}
 		;
+
 			
 THROW	: lanzar '(' EXCEPCION ')' ';'{
 		nodo1 = new Nodo('lanzar',$1,@1,[]);
@@ -860,6 +861,7 @@ EXCEPCION	: NullException{
 		$$ = nodo;
 	}
 			;
+
 		
 OP: E { 
 		nodo  = new Nodo("OP",null,null,[$1]);
@@ -868,13 +870,14 @@ OP: E {
 	}
 	;
 
+
 E   : '(' E ')'{
 		nodo1 = new Nodo('(',$1,@1,[]);
 		nodo2 = new Nodo(')',$3,@3,[]);
 		nodo  = new Nodo("E",null,null,[nodo1,$1,nodo2]);
 		$$ = nodo;
 	}
-	| E '+' E{
+    | E '+' E{
 		nodo1 = new Nodo('+',$2,@2,[]);
 		nodo  = new Nodo("E",null,null,[$1,nodo1,$3]);
 		$$ = nodo;
@@ -914,7 +917,7 @@ E   : '(' E ')'{
 		nodo  = new Nodo("E",null,null,[nodo1,$1]);
 		$$ = nodo;
 	}
-	| E '>=' E{
+    | E '>=' E{
 		nodo1 = new Nodo('>=',$2,@2,[]);
 		nodo  = new Nodo("E",null,null,[$1,nodo1,$3]);
 		$$ = nodo;
@@ -929,12 +932,12 @@ E   : '(' E ')'{
 		nodo  = new Nodo("E",null,null,[$1,nodo1,$3]);
 		$$ = nodo;
 	}
-	| E '!=' E{
+    | E '!=' E{
 		nodo1 = new Nodo('!=',$2,@2,[]);
 		nodo  = new Nodo("E",null,null,[$1,nodo1,$3]);
 		$$ = nodo;
 	}
-	| E '>' E{
+    | E '>' E{
 		nodo1 = new Nodo('>',$2,@2,[]);
 		nodo  = new Nodo("E",null,null,[$1,nodo1,$3]);
 		$$ = nodo;
@@ -964,7 +967,7 @@ E   : '(' E ')'{
 		nodo  = new Nodo("E",null,null,[$1,nodo1,$3]);
 		$$ = nodo;
 	}
-	| E '|?' E{
+    | E '|?' E{
 		nodo1 = new Nodo('|?',$2,@2,[]);
 		nodo  = new Nodo("E",null,null,[$1,nodo1,$3]);
 		$$ = nodo;
@@ -999,27 +1002,27 @@ E   : '(' E ')'{
 		nodo	= new Nodo("E",null,null,[nodo1]);
 		$$ = nodo;
 	}	
-	| id {
+    | id {
 		nodo1 = new Nodo("id",$1,@1,[]);
 		nodo	= new Nodo("E",null,null,[nodo1]);
 		$$ = nodo;
 	}	
-	| cadena{
+    | cadena{
 		nodo1 = new Nodo("cadena",$1,@1,[]);
 		nodo	= new Nodo("E",null,null,[nodo1]);
 		$$ = nodo;
 	}	
-	| cadenaSimple{
+    | cadenaSimple{
 		nodo1 = new Nodo("id",$1,@1,[]);
 		nodo	= new Nodo("cadenaSimple",null,null,[nodo1]);
 		$$ = nodo;
 	}	
-	| nulo{
+    | nulo{
 		nodo1 = new Nodo("nulo",$1,@1,[]);
 		nodo	= new Nodo("E",null,null,[nodo1]);
 		$$ = nodo;
 	}	
-	| create '(' id ')'{
+    | create '(' id ')'{
 		nodo1 = new Nodo('create',$1,@1,[]);
 		nodo2 = new Nodo('(',$2,@2,[]);
 		nodo3 = new Nodo('id',$3,@3,[]);
@@ -1027,7 +1030,7 @@ E   : '(' E ')'{
 		nodo  = new Nodo("E",null,null,[nodo1,nodo2,nodo3,nodo4]);
 		$$ = nodo;
 	}	
-	| INSTANCIA {
+    | INSTANCIA {
 		nodo	= new Nodo("E",null,null,[$1]);
 		$$ = nodo;
 	}	

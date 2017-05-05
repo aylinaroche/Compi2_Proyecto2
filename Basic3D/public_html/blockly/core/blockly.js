@@ -1,3 +1,5 @@
+/* global goog, Blockly */
+
 /**
  * @license
  * Visual Blocks Editor

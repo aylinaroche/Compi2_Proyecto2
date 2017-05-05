@@ -44,27 +44,48 @@ function prueba() {
 //            + "}"
 //            + "");
 
-    gramatica.parse(
-            " num max , min :5*502+30;"
-//            + "Nodo inicio : NULL;"
-//            + "array : estados [ 5 ][ 3 ] of bool ;"
-//            + "Nodo final : NULL;"
-            + "element : Nodo { "
-            + "     Nodo o1;"
-            + "     bool bandera : 10>5 || 5==5; "
-            + "     objetoN object : create(objetoN);"
-            + "     array : x [1..3][1..4][1..5] of bool;"
-            + "}"
-//            "element : Nodo {"
-//            + "    num valor : 0;"
-//            + "    Nodo siguiente : NULL;"
+//    gramatica.parse(
+//            " num max , min :5*502+30;"
+////            + "Nodo inicio : NULL;"
+////            + "array : estados [ 5 ][ 3 ] of bool ;"
+////            + "Nodo final : NULL;"
+//            + "element : Nodo { "
+//            + "     Nodo objeto;"
+//            + "     bool bandera : 10>5 || 5==5; "
+//            + "     objetoN object : create(objetoN);"
+//            + "     array : x [1..3][1..4][1..5] of bool;"
 //            + "}"
-            + ""
-            );
-
-//gramatica.parse(
-//        "(b<c) && (a>x)"
+////            "element : Nodo {"
+////            + "    num valor : 0;"
+////            + "    Nodo siguiente : NULL;"
+////            + "}"
+//            + ""
 //            );
+
+
+    gramatica.parse(
+            "void:main(){"
+            + "  num x, y : 2+8;\n"
+            + "  x = 10;\n"
+            + "  y = 20+3;\n"
+            + "  metodo1();\n"
+            + "}\n"
+            + ""
+            + "void:metodo1(){\n"
+            + "  num x, y;\n"
+            + "  x = 10;\n"
+            + "  y = 20;\n"
+            + "}"
+
+            + "Nodo object : create(Nodo);"
+            + "Nodo obj;"
+            + ""
+            + " element :  Nodo {\n"
+            + "  num a : 5;"
+            + "  num b : 6;"
+            + "  Nodo sig;"
+            + "}"
+            );
 
     let nodo = gramatica.arbol.raiz;
     listaSimbolo = [];
@@ -75,28 +96,31 @@ function prueba() {
     tabla = new TablaSimbolo();
     monticulo = new Heap();
     ambito = new Stack();
+    auxliar = new Stack();
     reporte = new Reporte();
     codigo = new ControlC3D();
-
+    funcion = new FuncionesC3D();
     if (nodo === null) {
         console.log("nulo");
     }
+    ambito.add("global");
     primer = new Recorrido();
     primer.Recorrer(nodo);
-  //  monticulo.llenarHeap(listaSimbolo, heap);
-   // ambito.removeAll();
- //  segundo = new GenerarC3D();
-//    segundo.Recorrer(nodo);
+
+    ambito.removeAll();
+    ambito.add("global");
+    segundo = new GenerarC3D();
+    segundo.Recorrer(nodo);
 
     console.log("\n * * * * * * *  " + listaSimbolo.length + "  * * * * * * * *");
     console.log(listaSimbolo);
-//    console.log("\n * * * * * * *  " + stack.length + " * * * * * * *");
-//    console.log(stack);
+    console.log("\n * * * * * * *  " + stack.length + " * * * * * * *");
+    console.log(stack);
     console.log("\n * * * * * * *  " + heap.length + " * * * * * * *");
     console.log(heap);
-    console.log("\n\n & & & & & & & & & & & & & & &  & & & & & & & &");
+    console.log("\n\n & & & & & & & & & & & & & & & & & & & & & & &\n\n");
     console.log(codigo.getC3D());
-    console.log("\n\n & & & & & & &  " + listaError.length + "  & & & & & & & &");
+    console.log("\n\n & & & & & & &  " + listaError.length + "  & & & & & & & &\n");
     console.log(listaError);
 }
 
